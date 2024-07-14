@@ -4,18 +4,16 @@ import { View, Text, TextInput, Pressable } from 'react-native';
 import { styles } from './styles';
 
 type ParticipantProps = {
-  nameParticipant: string;
-  onRemove: () => void;
+  name: string;
+  onRemove: () => string;
 }
 
 
-
-
-export function Participant({ nameParticipant, onRemove }: ParticipantProps) {
+export function Participant({ name, onRemove }: ParticipantProps) {
   return (
     <View style={styles.container}>
       <Text style={styles.name}>
-        {nameParticipant}
+        {name}
       </Text>
     
           <Pressable

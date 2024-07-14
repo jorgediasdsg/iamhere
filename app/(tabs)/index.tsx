@@ -1,32 +1,72 @@
-import { Text, View, TextInput, Pressable, FlatList } from 'react-native';
+import { Text, View, TextInput, Pressable, FlatList, Alert } from 'react-native';
 
 import { styles } from './styles';
 import { Participant } from '../components/participant';
+import { useState, useEffect } from 'react';
 
-function handleParticipantAdd() {
-  console.log('Adicionar participante');
-}
 
-function handleParticipantRemove() { 
-  console.log('Voce removeu um participante');
-}
 
-const participants = [
-  { name: 'Jorge' },
-  { name: 'K' },
-  { name: 'Lucca' },
-  { name: 'Vi' },
-  { name: 'Noah' },
-  { name: 'Sushi' },
-  { name: 'Whisky' },
-  { name: 'Nina' },
-  { name: 'Nina1' },
-  { name: 'Nina2' },
-  { name: 'Nina3' },
-  { name: 'Nina4' },
-];
 
 export default function HomeScreen() {
+  const [participants, setParticipants] = useState(['Jorge', 'Noah'])
+
+
+
+
+  function handleParticipantAdd() {
+    // verifica se o participante já foi adicionado
+    console.log(" Adicionando participante");
+    if (participants.includes('Jorge2')) {
+      Alert.alert('Participante já adicionado', 'O participante Jorge já foi adicionado');
+      return;
+    }
+
+
+
+      setParticipants(prevState => [...prevState, 'Jorge2']);
+
+
+
+    // setParticipants(prevState => [...prevState, 'Jorge2']);
+
+    // Adiciona o participante ao array participants
+    // setParticipants([...participants, 'Jorge2']);
+
+  }
+
+  function handleParticipantRemove(name: string): void {
+    // Pergunta se deseja remover o participante
+    Alert.alert(
+      `Remover participante`,
+      `Deseja remover o participante ${name}?`,
+      [
+        {
+          text: 'Cancelar',
+          style: 'cancel',
+        },
+        {
+          text: 'Remover',
+          onPress: () => {
+            console.log(`Participante ${name} removido`);
+            // Remove o participante do array participants
+
+            setParticipants(participants.filter((participant: string) => participant !== name));
+
+            Alert.alert('Participante removido', `O participante ${name} foi removido com sucesso`);
+          },
+        },
+      ],
+    );
+  }
+
+
+
+
+
+
+
+
+
   return (
     <View style={styles.container} >
       <Text style={styles.title}>
@@ -50,13 +90,9 @@ export default function HomeScreen() {
       </View>
       <FlatList
         data={participants}
-        keyExtractor={(item) => item.name}
+        keyExtractor={item => item}
         renderItem={({ item }) => (
-          <Participant
-            key={item.name}
-            nameParticipant={item.name}
-            onRemove={handleParticipantRemove}
-          />
+          <Participant key={item} name={item} onRemove={() => handleParticipantRemove(item)} />
         )}
       
         ListEmptyComponent={() => (
