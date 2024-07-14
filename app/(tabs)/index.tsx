@@ -9,28 +9,20 @@ import { useState, useEffect } from 'react';
 
 export default function HomeScreen() {
   const [participants, setParticipants] = useState(['Jorge', 'Noah'])
-
-
-
+  const [participantName, setParticipantName] = useState('');
 
   function handleParticipantAdd() {
-    // verifica se o participante já foi adicionado
-    console.log(" Adicionando participante");
-    if (participants.includes('Jorge2')) {
+    if (participants.includes(participantName)) {
       Alert.alert('Participante já adicionado', 'O participante Jorge já foi adicionado');
       return;
     }
+    if (participantName === '') {
+      Alert.alert('Campo obrigatório', 'O campo de participante é obrigatório');
+      return;
+    }
 
-
-
-      setParticipants(prevState => [...prevState, 'Jorge2']);
-
-
-
-    // setParticipants(prevState => [...prevState, 'Jorge2']);
-
-    // Adiciona o participante ao array participants
-    // setParticipants([...participants, 'Jorge2']);
+    setParticipants(prevState => [...prevState, participantName]);
+    setParticipantName('');
 
   }
 
@@ -78,6 +70,8 @@ export default function HomeScreen() {
       <View style={styles.form}>
         <TextInput style={styles.input}
           placeholder="Adicionar participante"
+          onChangeText={setParticipantName}
+          value={participantName}
         />
         <Pressable
           style={styles.button}
@@ -88,19 +82,18 @@ export default function HomeScreen() {
           </Text>
         </Pressable>
       </View>
+
       <FlatList
         data={participants}
         keyExtractor={item => item}
         renderItem={({ item }) => (
           <Participant key={item} name={item} onRemove={() => handleParticipantRemove(item)} />
         )}
-      
-        ListEmptyComponent={() => (
         
+        ListEmptyComponent={() => (
           <Text style={styles.listEmpty}>
             Nenhum participante cadastrado
           </Text>
-        
         )}
       />
   
